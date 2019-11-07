@@ -52,11 +52,12 @@ def handle_client(client):
                 broadcast(bytes(name + ": " + mes + "▓" + color, "utf8"))
             else:
                 get = interpret(mes)
-                print(get)
                 if get[0] == "color":
                     color = get[1][0].replace(" ", "")
                     if not iscolor(color):
                         color = "#dddddd"
+                else:
+                    broadcast(bytes("▓" + mes[1:].replace(";>", "▓"), "utf8"))
         else:
             client.send(bytes("(выход)", "utf8"))
             client.close()
