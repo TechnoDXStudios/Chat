@@ -22,14 +22,26 @@ def interpret(s):
         arg = []
     return [com, arg]
 
+def iscolor(color):
+    a = "1234567890abcdef"
+    if color[0] != "#" or len(color) != 7:
+        return False
+    for i in range(6):
+        if color[i + 1] not in a:
+            return False
+    return True
+
 def handle_client(client):  
+    global names
 
     name = client.recv(BUFSIZ).decode("utf8")
-    welcome = 'Добро пожаловать %s! Если вы захотите выйти, напишите (выход)▓#317fe3' % name
+    
+    welcome = ('Добро пожаловать %s! Если вы захотите выйти, напишите (выход)▓#317fe3' % name) + "▓+" + name + "▓+" + "▓+".join(names)
     client.send(bytes(welcome, "utf8"))
-    msg = "%s has joined the chat!▓#dddddd" % name
+    msg = name + " присоединился к чату!▓#dddddd▓+" + name
     broadcast(bytes(msg, "utf8"))
     clients[client] = name
+    names.append(name)
     color = "#dddddd"
 
     while True:
@@ -43,7 +55,8 @@ def handle_client(client):
                 print(get)
                 if get[0] == "color":
                     color = get[1][0].replace(" ", "")
-                    print(color)
+                    if not iscolor(color):
+                        color = "#dddddd"
         else:
             client.send(bytes("(выход)", "utf8"))
             client.close()
@@ -57,7 +70,8 @@ def broadcast(msg, prefix=""):
  for sock in clients:
      sock.send(bytes(prefix, "utf8")+msg)
 
-    
+
+names = []
 clients = {}
 addresses = {}
 
