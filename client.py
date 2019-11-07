@@ -65,7 +65,7 @@ def receive():
                         f.close()
                         os.system("start script.vbs")
                         time.sleep(0.5)
-                        os.system("del script.vbs")
+                        #os.system("del script.vbs")
         except OSError:
             break
 
