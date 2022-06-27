@@ -1,4 +1,3 @@
 # Chat
 
-Chat on tkinter and socket in Python
-This is not public project, we not accept pull requests
+This is simple chat implemenation based on tkinter in python. It uses TCP protocol to send data between chats, that are controlled by the main server
